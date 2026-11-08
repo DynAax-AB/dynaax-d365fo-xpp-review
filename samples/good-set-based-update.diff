@@ -1,0 +1,41 @@
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONVendorRatingService.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONVendorRatingService.xml
+index de5fb21..ece8a11 100644
+--- a/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONVendorRatingService.xml
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONVendorRatingService.xml
+@@ -25,6 +25,36 @@ final class CONVendorRatingService
+         rating.insert();
+     }
+ 
++]]></Source>
++			</Method>
++			<Method>
++				<Name>expireRatings</Name>
++				<Source><![CDATA[
++    /// <summary>
++    /// Expires ratings older than the cut-off date, and ratings for blocked vendors.
++    /// </summary>
++    public void expireRatings(TransDate _cutOff)
++    {
++        CONVendorRating rating;
++        VendTable       vendTable;
++
++        ttsbegin;
++
++        update_recordset rating
++            setting Status = CONRatingStatus::Expired
++            where rating.Status == CONRatingStatus::Active
++               && rating.RatingDate < _cutOff;
++
++        update_recordset rating
++            setting Status = CONRatingStatus::Expired
++            where rating.Status == CONRatingStatus::Active
++            exists join vendTable
++                where vendTable.AccountNum == rating.VendAccount
++                   && vendTable.Blocked == CustVendorBlocked::All;
++
++        ttscommit;
++    }
++
+ ]]></Source>
+ 			</Method>
+ 		</Methods>

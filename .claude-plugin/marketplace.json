@@ -1,0 +1,14 @@
+{
+  "name": "d365fo-xpp-review",
+  "description": "Free AI code review for Dynamics 365 F&O X++ changes.",
+  "owner": {
+    "name": "Nurlin Aberra"
+  },
+  "plugins": [
+    {
+      "name": "d365fo-xpp-review",
+      "source": "./",
+      "description": "Reviews X++ changes like a senior F&O developer, with a rule, reason, fix and severity for each finding."
+    }
+  ]
+}

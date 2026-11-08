@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Microsoft Learn for Finance and Operations
+    url: https://learn.microsoft.com/en-us/dynamics365/finance/
+    about: Microsoft's official documentation.

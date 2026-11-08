@@ -1,0 +1,56 @@
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONVendorScorecardService.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONVendorScorecardService.xml
+new file mode 100644
+index 0000000..e9ce8a7
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONVendorScorecardService.xml
+@@ -0,0 +1,37 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
++	<Name>CONVendorScorecardService</Name>
++	<SourceCode>
++		<Declaration><![CDATA[
++final class CONVendorScorecardService
++{
++    private const str ScoringUrl = 'https://scoring.contoso.example/api/v1/score';
++    private const str ApiKey     = 'REPLACE-ME-0000-FAKE-KEY';
++}
++]]></Declaration>
++		<Methods>
++			<Method>
++				<Name>refreshScores</Name>
++				<Source><![CDATA[
++    public void refreshScores()
++    {
++        System.Net.WebClient client;
++        str                  response;
++
++        if (curExt() != 'USMF')
++        {
++            return;
++        }
++
++        client = new System.Net.WebClient();
++        client.Headers.Add('x-api-key', ApiKey);
++        response = client.DownloadString(ScoringUrl);
++
++        info("Done");
++    }
++
++]]></Source>
++			</Method>
++		</Methods>
++	</SourceCode>
++</AxClass>
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxMenuItemDisplay/CONVendorScorecard.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxMenuItemDisplay/CONVendorScorecard.xml
+new file mode 100644
+index 0000000..43a8331
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxMenuItemDisplay/CONVendorScorecard.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxMenuItemDisplay xmlns:i="http://www.w3.org/2001/XMLSchema-instance"
++	xmlns="Microsoft.Dynamics.AX.Metadata.V1">
++	<Name>CONVendorScorecard</Name>
++	<Label>Vendor scorecard</Label>
++	<Object>CONVendorScorecard</Object>
++</AxMenuItemDisplay>

@@ -1,0 +1,181 @@
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONExpireRatingsContract.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONExpireRatingsContract.xml
+new file mode 100644
+index 0000000..5261052
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONExpireRatingsContract.xml
+@@ -0,0 +1,30 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
++	<Name>CONExpireRatingsContract</Name>
++	<SourceCode>
++		<Declaration><![CDATA[
++/// <summary>
++/// Parameters for expiring vendor ratings.
++/// </summary>
++[DataContractAttribute]
++final class CONExpireRatingsContract
++{
++    TransDate cutOff;
++}
++]]></Declaration>
++		<Methods>
++			<Method>
++				<Name>parmCutOff</Name>
++				<Source><![CDATA[
++    [DataMemberAttribute, SysOperationLabelAttribute(literalStr("@CON:CutOffDate"))]
++    public TransDate parmCutOff(TransDate _cutOff = cutOff)
++    {
++        cutOff = _cutOff;
++        return cutOff;
++    }
++
++]]></Source>
++			</Method>
++		</Methods>
++	</SourceCode>
++</AxClass>
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONExpireRatingsController.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONExpireRatingsController.xml
+new file mode 100644
+index 0000000..c0281aa
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONExpireRatingsController.xml
+@@ -0,0 +1,45 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
++	<Name>CONExpireRatingsController</Name>
++	<SourceCode>
++		<Declaration><![CDATA[
++/// <summary>
++/// Runs the expire vendor ratings job.
++/// </summary>
++final class CONExpireRatingsController extends SysOperationServiceController implements BatchRetryable
++{
++}
++]]></Declaration>
++		<Methods>
++			<Method>
++				<Name>main</Name>
++				<Source><![CDATA[
++    public static void main(Args _args)
++    {
++        CONExpireRatingsController controller = new CONExpireRatingsController(
++            classStr(CONExpireRatingsService),
++            methodStr(CONExpireRatingsService, process),
++            SysOperationExecutionMode::Synchronous);
++
++        controller.parmDialogCaption("@CON:ExpireRatings");
++        controller.startOperation();
++    }
++
++]]></Source>
++			</Method>
++			<Method>
++				<Name>isRetryable</Name>
++				<Source><![CDATA[
++    /// <summary>
++    /// Safe to retry: setting the same status again changes nothing.
++    /// </summary>
++    public boolean isRetryable()
++    {
++        return true;
++    }
++
++]]></Source>
++			</Method>
++		</Methods>
++	</SourceCode>
++</AxClass>
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONExpireRatingsService.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONExpireRatingsService.xml
+new file mode 100644
+index 0000000..849c73b
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONExpireRatingsService.xml
+@@ -0,0 +1,28 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
++	<Name>CONExpireRatingsService</Name>
++	<SourceCode>
++		<Declaration><![CDATA[
++/// <summary>
++/// Expires vendor ratings in batch.
++/// </summary>
++final class CONExpireRatingsService extends SysOperationServiceBase
++{
++}
++]]></Declaration>
++		<Methods>
++			<Method>
++				<Name>process</Name>
++				<Source><![CDATA[
++    public void process(CONExpireRatingsContract _contract)
++    {
++        CONVendorRatingService ratingService = new CONVendorRatingService();
++
++        ratingService.expireRatings(_contract.parmCutOff());
++    }
++
++]]></Source>
++			</Method>
++		</Methods>
++	</SourceCode>
++</AxClass>
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxLabelFile/LabelResources/en-US/CON.en-US.label.txt b/Metadata/ContosoExtensions/ContosoExtensions/AxLabelFile/LabelResources/en-US/CON.en-US.label.txt
+index 308ce11..a36aaf6 100644
+--- a/Metadata/ContosoExtensions/ContosoExtensions/AxLabelFile/LabelResources/en-US/CON.en-US.label.txt
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxLabelFile/LabelResources/en-US/CON.en-US.label.txt
+@@ -1 +1,4 @@
++CutOffDate=Cut-off date
++ExpireRatings=Expire vendor ratings
+ OpenBalance=Open balance
++VendorRatingMaintain=Maintain vendor ratings
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxMenuItemAction/CONExpireRatings.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxMenuItemAction/CONExpireRatings.xml
+new file mode 100644
+index 0000000..823e4b3
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxMenuItemAction/CONExpireRatings.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxMenuItemAction xmlns:i="http://www.w3.org/2001/XMLSchema-instance"
++	xmlns="Microsoft.Dynamics.AX.Metadata.V1">
++	<Name>CONExpireRatings</Name>
++	<Label>@CON:ExpireRatings</Label>
++	<Object>CONExpireRatingsController</Object>
++	<ObjectType>Class</ObjectType>
++</AxMenuItemAction>
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxSecurityDuty/CONVendorRatingMaintain.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxSecurityDuty/CONVendorRatingMaintain.xml
+new file mode 100644
+index 0000000..abedf9a
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxSecurityDuty/CONVendorRatingMaintain.xml
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxSecurityDuty xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
++	<Name>CONVendorRatingMaintain</Name>
++	<Label>@CON:VendorRatingMaintain</Label>
++	<Privileges>
++		<AxSecurityPrivilegeReference>
++			<Name>CONExpireRatings</Name>
++		</AxSecurityPrivilegeReference>
++	</Privileges>
++</AxSecurityDuty>
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxSecurityPrivilege/CONExpireRatings.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxSecurityPrivilege/CONExpireRatings.xml
+new file mode 100644
+index 0000000..37ad1cb
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxSecurityPrivilege/CONExpireRatings.xml
+@@ -0,0 +1,15 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxSecurityPrivilege xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
++	<Name>CONExpireRatings</Name>
++	<Label>@CON:ExpireRatings</Label>
++	<EntryPoints>
++		<AxSecurityEntryPointReference>
++			<Name>CONExpireRatings</Name>
++			<Grant>
++				<Invoke>Allow</Invoke>
++			</Grant>
++			<ObjectName>CONExpireRatings</ObjectName>
++			<ObjectType>MenuItemAction</ObjectType>
++		</AxSecurityEntryPointReference>
++	</EntryPoints>
++</AxSecurityPrivilege>

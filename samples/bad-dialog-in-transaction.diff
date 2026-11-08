@@ -1,0 +1,52 @@
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONSalesOrderClose.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONSalesOrderClose.xml
+new file mode 100644
+index 0000000..4d33e5d
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CONSalesOrderClose.xml
+@@ -0,0 +1,46 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
++	<Name>CONSalesOrderClose</Name>
++	<SourceCode>
++		<Declaration><![CDATA[
++final class CONSalesOrderClose
++{
++}
++]]></Declaration>
++		<Methods>
++			<Method>
++				<Name>closeOrder</Name>
++				<Source><![CDATA[
++    public void closeOrder(SalesId _salesId)
++    {
++        SalesTable salesTable;
++
++        ttsbegin;
++
++        salesTable = SalesTable::find(_salesId, true);
++        if (!salesTable)
++        {
++            return;
++        }
++
++        if (Box::yesNo("Close sales order " + _salesId + "?", DialogButton::No) == DialogButton::Yes)
++        {
++            try
++            {
++                salesTable.CONClosedDate = DateTimeUtil::getSystemDate(DateTimeUtil::getUserPreferredTimeZone());
++                salesTable.update();
++            }
++            catch
++            {
++                // Ignore, the order stays open.
++            }
++        }
++
++        ttscommit;
++    }
++
++]]></Source>
++			</Method>
++		</Methods>
++	</SourceCode>
++</AxClass>

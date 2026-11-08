@@ -1,0 +1,10 @@
+{
+  "name": "d365fo-xpp-review",
+  "description": "An AI code-review skill for Dynamics 365 Finance and Supply Chain Management X++ changes: extensions, Chain of Command, transactions, set-based operations, labels, security, display methods and batch jobs.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Nurlin Aberra"
+  },
+  "license": "MIT",
+  "keywords": ["dynamics-365", "finance-and-operations", "d365fo", "x++", "code-review"]
+}

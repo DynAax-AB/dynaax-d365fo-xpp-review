@@ -1,0 +1,47 @@
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxClass/SalesTableCON_Extension.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/SalesTableCON_Extension.xml
+new file mode 100644
+index 0000000..ea46ade
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/SalesTableCON_Extension.xml
+@@ -0,0 +1,34 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
++	<Name>SalesTableCON_Extension</Name>
++	<SourceCode>
++		<Declaration><![CDATA[
++/// <summary>
++/// Contoso extension of SalesTable: delivery note check.
++/// </summary>
++[ExtensionOf(tableStr(SalesTable))]
++final class SalesTableCON_Extension
++{
++}
++]]></Declaration>
++		<Methods>
++			<Method>
++				<Name>validateWrite</Name>
++				<Source><![CDATA[
++    public boolean validateWrite()
++    {
++        boolean ret = next validateWrite();
++
++        if (ret && this.CONRequiresDeliveryNote && !this.CONDeliveryNote)
++        {
++            ret = checkFailed("@CON:DeliveryNoteRequired");
++        }
++
++        return ret;
++    }
++
++]]></Source>
++			</Method>
++		</Methods>
++	</SourceCode>
++</AxClass>
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxLabelFile/LabelResources/en-US/CON.en-US.label.txt b/Metadata/ContosoExtensions/ContosoExtensions/AxLabelFile/LabelResources/en-US/CON.en-US.label.txt
+index 308ce11..bbd8a13 100644
+--- a/Metadata/ContosoExtensions/ContosoExtensions/AxLabelFile/LabelResources/en-US/CON.en-US.label.txt
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxLabelFile/LabelResources/en-US/CON.en-US.label.txt
+@@ -1 +1,2 @@
++DeliveryNoteRequired=Enter a delivery note for this order.
+ OpenBalance=Open balance

@@ -1,0 +1,34 @@
+name: Idea for a rule
+description: A review rule you check in every X++ pull request that's missing here.
+title: "[Rule] "
+labels: ["idea"]
+body:
+  - type: textarea
+    id: rule
+    attributes:
+      label: The rule
+      description: One sentence, for example "No select inside a display method on a grid".
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters
+      description: What goes wrong in production when the rule is broken.
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: A small example
+      description: Made-up code that breaks the rule, and the fix.
+      render: text
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Blocker
+        - Major
+        - Minor
+        - Question

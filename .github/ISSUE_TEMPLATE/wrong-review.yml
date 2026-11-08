@@ -1,0 +1,55 @@
+name: Wrong or weak review
+description: The skill missed a problem, flagged something that's fine, or gave a wrong fix.
+title: "[Review] "
+labels: ["answer-quality"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping make the reviews more accurate.
+        **Please don't paste customer code or secrets.** A small made-up example that shows the problem is best.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What went wrong?
+      options:
+        - It missed a problem
+        - It flagged something that's fine
+        - The fix it suggested is wrong
+        - The severity or verdict is off
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: The code or diff
+      description: A small made-up example is enough.
+      render: diff
+    validations:
+      required: true
+  - type: textarea
+    id: review
+    attributes:
+      label: What did the review say?
+    validations:
+      required: true
+  - type: textarea
+    id: correct
+    attributes:
+      label: What should it have said?
+      description: Name the rule ID if there is one, and link to Microsoft Learn if you can.
+  - type: input
+    id: version
+    attributes:
+      label: F&O version
+      placeholder: "10.0.45"
+  - type: dropdown
+    id: assistant
+    attributes:
+      label: Which assistant?
+      options:
+        - Claude (web or desktop)
+        - Claude Code
+        - Copilot Studio
+        - Other

@@ -1,0 +1,41 @@
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxClass/SalesTableCON_Extension.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/SalesTableCON_Extension.xml
+new file mode 100644
+index 0000000..ed4351b
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/SalesTableCON_Extension.xml
+@@ -0,0 +1,35 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
++	<Name>SalesTableCON_Extension</Name>
++	<SourceCode>
++		<Declaration><![CDATA[
++[ExtensionOf(tableStr(SalesTable))]
++class SalesTableCON_Extension
++{
++}
++]]></Declaration>
++		<Methods>
++			<Method>
++				<Name>validateWrite</Name>
++				<Source><![CDATA[
++    public boolean validateWrite()
++    {
++        boolean ret;
++
++        if (this.CONRequiresDeliveryNote && !this.CONDeliveryNote)
++        {
++            ret = checkFailed("Enter a delivery note for this order.");
++        }
++        else
++        {
++            ret = next validateWrite();
++        }
++
++        return ret;
++    }
++
++]]></Source>
++			</Method>
++		</Methods>
++	</SourceCode>
++</AxClass>

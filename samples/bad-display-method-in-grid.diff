@@ -1,0 +1,68 @@
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CustTableCON_Extension.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CustTableCON_Extension.xml
+new file mode 100644
+index 0000000..bb2fa33
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxClass/CustTableCON_Extension.xml
+@@ -0,0 +1,32 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
++	<Name>CustTableCON_Extension</Name>
++	<SourceCode>
++		<Declaration><![CDATA[
++[ExtensionOf(tableStr(CustTable))]
++final class CustTableCON_Extension
++{
++}
++]]></Declaration>
++		<Methods>
++			<Method>
++				<Name>CONOpenBalance</Name>
++				<Source><![CDATA[
++    /// <summary>
++    /// The customer's balance in accounting currency.
++    /// </summary>
++    public display AmountMST CONOpenBalance()
++    {
++        CustTrans custTrans;
++
++        select sum(AmountMST) from custTrans
++            where custTrans.AccountNum == this.AccountNum;
++
++        return custTrans.AmountMST;
++    }
++
++]]></Source>
++			</Method>
++		</Methods>
++	</SourceCode>
++</AxClass>
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxFormExtension/CustTableListPage.CONExtension.xml b/Metadata/ContosoExtensions/ContosoExtensions/AxFormExtension/CustTableListPage.CONExtension.xml
+new file mode 100644
+index 0000000..62079ce
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxFormExtension/CustTableListPage.CONExtension.xml
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="utf-8"?>
++<AxFormExtension xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
++	<Name>CustTableListPage.CONExtension</Name>
++	<Controls>
++		<AxFormExtensionControl xmlns="">
++			<Name>CONOpenBalance</Name>
++			<FormControl xmlns="" i:type="AxFormRealControl">
++				<Name>CONOpenBalance</Name>
++				<Type>Real</Type>
++				<DataSource>CustTable</DataSource>
++				<DataMethod>CONOpenBalance</DataMethod>
++				<Label>@CON:OpenBalance</Label>
++			</FormControl>
++			<Parent>Grid</Parent>
++		</AxFormExtensionControl>
++	</Controls>
++</AxFormExtension>
+diff --git a/Metadata/ContosoExtensions/ContosoExtensions/AxLabelFile/LabelResources/en-US/CON.en-US.label.txt b/Metadata/ContosoExtensions/ContosoExtensions/AxLabelFile/LabelResources/en-US/CON.en-US.label.txt
+new file mode 100644
+index 0000000..308ce11
+--- /dev/null
++++ b/Metadata/ContosoExtensions/ContosoExtensions/AxLabelFile/LabelResources/en-US/CON.en-US.label.txt
+@@ -0,0 +1 @@
++OpenBalance=Open balance
